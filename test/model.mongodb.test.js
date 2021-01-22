@@ -14,7 +14,10 @@ describe('Model MongoDB', () => {
     },
     email: {
       type: 'Email',
-      required: true
+      required: true,
+    },
+    hobby: {
+      type: 'Text'
     }
   };
 
@@ -70,6 +73,7 @@ describe('Model MongoDB', () => {
     expect(user).to.have.property('_id');
     expect(user).to.have.property('name', preDoc.name);
     expect(user).to.have.property('email', preDoc.email);
+    expect(user).not.to.have.property('hobby');
   });
 
   it('should not create doc because missing field', async () => {
@@ -180,5 +184,34 @@ describe('Model MongoDB', () => {
     const user = await UserModel.remove(UserModel.id());
 
     expect(user).to.be.equal(null);
+  });
+
+  it('should get list doc with empty query', async () => {
+    const UserModel = Model(db, 'users', Schema);
+
+    const list = await UserModel.list();
+
+    expect(list).to.have.property('total');
+    expect(list).to.have.property('limit');
+    expect(list).to.have.property('skip');
+    expect(list).to.have.property('data');
+  });
+
+  it('should get list doc', async () => {
+    const UserModel = Model(db, 'users', Schema);
+
+    const list = await UserModel.list({
+      email: "abc@example.com",
+      $limit: -1,
+      $skip: 2,
+      $sort: {
+        email: 1
+      }
+    });
+
+    expect(list).to.have.property('total');
+    expect(list).to.have.property('limit', -1);
+    expect(list).to.have.property('skip', 2);
+    expect(list).to.have.property('data');
   });
 });

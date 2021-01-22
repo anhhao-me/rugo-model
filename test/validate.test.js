@@ -19,10 +19,10 @@ describe('Validate', () => {
   it('should throw error because of not text', async () => {
     try { 
       await validate({}, {
-        type: 'Text'
-      }, undefined);
+        type: 'Text',
+      }, 123);
     } catch (err){
-      expect(err.message).to.be.equal('"undefined" is not a text');
+      expect(err.message).to.be.equal('"123" is not a text');
       return;
     }
 

@@ -28,4 +28,25 @@ describe('Validate', () => {
 
     assert.fail();
   });
+
+  it('should valid json type', async () => {
+    const val = await validate({}, {
+      type: 'JSON',
+    }, { foo: 'bar' });
+
+    expect(val).to.have.property('foo', 'bar');
+  });
+
+  it('should not valid json type', async () => {
+    try { 
+      await validate({}, {
+        type: 'JSON',
+      }, '123');
+    } catch (err){
+      expect(err.message).to.be.equal('"123" is not a json');
+      return;
+    }
+
+    assert.fail();
+  });
 });

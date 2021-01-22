@@ -16,6 +16,28 @@ describe('Transform', () => {
     assert.fail();
   });
 
+  it('should transform json', async () => {
+    const transform = require('../lib/transform');
+    
+    const undefinedObj = await transform({}, {
+      type: 'JSON',
+    }, null);
+
+    expect(typeof undefinedObj).to.be.equal('object');
+
+    const stringObj = await transform({}, {
+      type: 'JSON',
+    }, '{"foo":"bar"}');
+
+    expect(stringObj).to.have.property('foo', 'bar');
+
+    const defaultObj = await transform({}, {
+      type: 'JSON',
+    }, { foo: 'bar' });
+
+    expect(defaultObj).to.have.property('foo', 'bar');
+  });
+
   it('should transform text', async () => {
     const transform = require('../lib/transform');
     

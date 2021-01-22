@@ -29,5 +29,8 @@
     "nyc": "^15.1.0",
     "ramda": "^0.27.1",
     "uniqid": "^5.2.0"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^6.9.3"
   }
 }

@@ -1,7 +1,7 @@
 const { Model, NeDB } = require('../lib');
 const { expect, assert } = require('chai');
 
-describe('Model', () => {
+describe('Model NeDB', () => {
   const db = NeDB();
   const Schema = {
     name: {
@@ -97,20 +97,20 @@ describe('Model', () => {
     expect(user).to.have.property('email', patchDoc.email);
   });
 
-  it('should remove doc successs', async () => {
+  it('should remove doc', async () => {
     const preDoc = {
       name: 'Removee',
       email: 'removee@example.com'
     };
 
-    const oldUser = await UserModel.create(preDoc);
-    const removeUser = await UserModel.remove(oldUser._id);
+    const preUser = await UserModel.create(preDoc);
+    const user = await UserModel.remove(preUser._id);
 
-    expect(removeUser).to.have.property('_id');
-    expect(removeUser).to.have.property('name', preDoc.name);
-    expect(removeUser).to.have.property('email', preDoc.email);
+    expect(user).to.have.property('_id');
+    expect(user).to.have.property('name', preDoc.name);
+    expect(user).to.have.property('email', preDoc.email);
 
-    const nulluser = await UserModel.get(removeUser._id);
+    const nulluser = await UserModel.get(user._id);
     expect(nulluser).to.be.equal(null);
   });
 });

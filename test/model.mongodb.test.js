@@ -18,7 +18,8 @@ describe('Model MongoDB', () => {
     },
     hobby: {
       type: 'Text'
-    }
+    },
+    __timestamp: true
   };
 
   before(async () => {

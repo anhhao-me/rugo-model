@@ -49,4 +49,24 @@ describe('Validate', () => {
 
     assert.fail();
   });
+
+  it('should valid datetime type', async () => {
+    const d = await validate({}, {
+      type: 'datetime',
+    }, new Date());
+
+    expect(d.constructor.name).to.be.equal('Date');
+  });
+
+  it('should not valid datetime type', async () => {
+    try {
+      await validate({}, {
+        type: 'datetime',
+      }, '123');
+      assert.fail();
+    }catch(err){
+      expect(err.message).to.be.equal('"123" is not a datetime');
+    };
+  });
+
 });

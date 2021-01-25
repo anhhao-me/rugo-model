@@ -59,4 +59,18 @@ describe('Transform', () => {
     }, '    hello world      ');
     expect(trim).to.be.equal('hello world');
   });
+
+  it('should transform datetime', async () => {
+    const transform = require('../lib/transform');
+    
+    const d = await transform({}, {
+      type: 'datetime'
+    }, 'Mon Jan 25 2021 12:09:23 GMT+0700 (Indochina Time)');
+    expect(d.constructor.name).to.be.equal('Date');
+
+    const d1 = await transform({}, {
+      type: 'datetime'
+    }, null);
+    expect(d1.constructor.name).to.be.equal('Date');
+  });
 });

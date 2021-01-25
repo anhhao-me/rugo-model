@@ -74,6 +74,8 @@ describe('Model MongoDB', () => {
     expect(user).to.have.property('_id');
     expect(user).to.have.property('name', preDoc.name);
     expect(user).to.have.property('email', preDoc.email);
+    expect(user).to.have.property('createdAt');
+    expect(user).to.have.property('updatedAt');
     expect(user).not.to.have.property('hobby');
   });
 

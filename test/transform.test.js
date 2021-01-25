@@ -73,4 +73,17 @@ describe('Transform', () => {
     }, null);
     expect(d1.constructor.name).to.be.equal('Date');
   });
+
+  it('should transform password', async () => {
+    const transform = require('../lib/transform');
+    const bcrypt = require('bcrypt');
+
+    const raw = 'helloworld';
+    
+    const hash = await transform({}, {
+      type: 'password'
+    }, raw);
+
+    expect(bcrypt.compareSync(raw, hash)).to.be.equal(true);
+  });
 });

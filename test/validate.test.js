@@ -69,4 +69,24 @@ describe('Validate', () => {
     };
   });
 
+  it('should valid password type', async () => {
+    const d = await validate({}, {
+      type: 'password',
+    }, '123');
+
+    expect(d).to.be.equal('123');
+  });
+
+  it('should throw error because of not password', async () => {
+    try { 
+      await validate({}, {
+        type: 'password',
+      }, 123);
+    } catch (err){
+      expect(err.message).to.be.equal('"123" is not a password');
+      return;
+    }
+
+    assert.fail();
+  });
 });

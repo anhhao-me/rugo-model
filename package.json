@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/anhhao-me/rugo-model#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
     "nedb": "^1.8.0",

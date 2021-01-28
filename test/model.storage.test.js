@@ -147,6 +147,18 @@ describe('Model Storage', () => {
     expect(list).to.have.property('data');
   });
 
+  it('should list empty', async () => {
+    const list = await TestFileModel.list({
+      dir: 'abc/xyz'
+    });
+
+    expect(list).to.have.property('total');
+    expect(list.total).to.be.equal(0);
+    expect(list).to.have.property('limit');
+    expect(list).to.have.property('skip');
+    expect(list).to.have.property('data');
+  });
+
   it('should patch', async () => {
     const message = 'hello world';
     const rs = Readable.from([ message ]);

@@ -89,4 +89,18 @@ describe('Validate', () => {
 
     assert.fail();
   });
+
+  it('should throw error because of unique with no name', async () => {
+    try { 
+      await validate({}, {
+        type: 'Text',
+        unique: true
+      }, '123');
+    } catch (err){
+      expect(err.message).to.be.equal('name must not be empty with unique');
+      return;
+    }
+
+    assert.fail();
+  });
 });

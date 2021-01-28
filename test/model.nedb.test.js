@@ -10,7 +10,8 @@ describe('Model NeDB', () => {
     },
     email: {
       type: 'Email',
-      required: true
+      required: true,
+      unique: true
     }
   };
 
@@ -112,5 +113,45 @@ describe('Model NeDB', () => {
 
     const nulluser = await UserModel.get(user._id);
     expect(nulluser).to.be.equal(null);
+  });
+
+  it('should get list doc', async () => {
+    const UserModel = Model(db, 'users', Schema);
+
+    const list = await UserModel.list({
+      email: "abc@example.com",
+      $limit: -1,
+      $skip: 2,
+      $sort: {
+        email: 1
+      }
+    });
+
+    expect(list).to.have.property('total');
+    expect(list).to.have.property('limit', -1);
+    expect(list).to.have.property('skip', 2);
+    expect(list).to.have.property('data');
+  });
+
+  it('should not create doc because of dupplication unique field', async () => {
+    const preDoc = {
+      name: 'Name1',
+      email: 'thename1@example.com'
+    };
+
+    const user = await UserModel.create(preDoc);
+
+    expect(user).to.have.property('_id');
+    expect(user).to.have.property('name', preDoc.name);
+    expect(user).to.have.property('email', preDoc.email);
+
+    try {
+      await UserModel.create(preDoc);
+    } catch(err){
+      expect(err.message).to.be.equal(`email "${preDoc.email}" must be unique`);
+      return;
+    }
+
+    assert.fail();
   });
 });

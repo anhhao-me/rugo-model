@@ -154,4 +154,32 @@ describe('Model NeDB', () => {
 
     assert.fail();
   });
+
+  it('should patch doc', async () => {
+    const preDoc = {
+      name: 'Patch 1',
+      email: 'patch1@example.com'
+    };
+
+    const preDoc2 = {
+      name: 'Patch 2',
+      email: 'patch2@example.com'
+    };
+
+    const patchDoc = {
+      email: 'patch2@example.com'
+    };
+
+    const preUser = await UserModel.create(preDoc);
+    await UserModel.create(preDoc2);
+
+    try {
+      await UserModel.patch(preUser._id, patchDoc);
+    } catch(err){
+      expect(err.message).to.be.equal(`email "${preDoc2.email}" must be unique`);
+      return;
+    }
+
+    assert.fail();
+  });
 });

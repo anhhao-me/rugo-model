@@ -5,16 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const { Readable } = require("stream");
 const uniqid = require('uniqid');
-const { createCanvas } = require('canvas')
-
-function streamToString (stream) {
-  const chunks = []
-  return new Promise((resolve, reject) => {
-    stream.on('data', chunk => chunks.push(chunk))
-    stream.on('error', reject)
-    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
-  })
-}
+const { createCanvas } = require('canvas');
+const { FilePath } = Storage;
 
 describe('Model Storage', () => {
   const tmpDir = path.join(__dirname, './tmp');
@@ -43,7 +35,9 @@ describe('Model Storage', () => {
       type: 'text/plain'
     });
 
-    const result = await streamToString(file.data);
+    const result = file.data.toString();
+    file.data.toStream();
+    file.data.toBuffer();
     expect(file).to.have.property('data');
     expect(file).to.have.property('type', 'text/plain');
     expect(result).to.be.equal(message);
@@ -70,7 +64,7 @@ describe('Model Storage', () => {
       type: 'text/plain',
     });
 
-    const result = await streamToString(file.data);
+    const result = file.data.toString();
     expect(file).to.have.property('data');
     expect(file).to.have.property('name', 'hello');
     expect(file).to.have.property('type', 'text/plain');
@@ -126,7 +120,7 @@ describe('Model Storage', () => {
       type: 'text/plain',
     });
 
-    const result = await streamToString(file.data);
+    const result = file.data.toString();
     expect(file).to.have.property('data');
     expect(file).to.have.property('name', 'hello');
     expect(file).to.have.property('dir', 'foo/bar');
@@ -175,7 +169,7 @@ describe('Model Storage', () => {
       type: 'text/html'
     });
 
-    const result = await streamToString(filePatched.data);
+    const result = filePatched.data.toString();
     expect(filePatched).to.have.property('data');
     expect(filePatched).to.have.property('name', 'me');
     expect(filePatched).to.have.property('dir', 'foo/bar');
@@ -206,5 +200,21 @@ describe('Model Storage', () => {
   it('should not remove non-exists file', async () => {
     const file = await TestFileModel.remove(uniqid());
     expect(file).to.be.equal(null);
+  });
+
+  it('should get new FilePath', async () => {
+    const filePath = FilePath(path.join(__dirname, 'assets/cat.jpg'))
+    expect(filePath).to.have.property('path');
+  });
+
+  it('should create a new file from real', async () => {
+    const file = await TestFileModel.create({
+      data: FilePath(path.join(__dirname, 'assets/cat.jpg'))
+    });
+
+    expect(file).to.have.property('data');
+    expect(file).to.have.property('name');
+    expect(file).to.have.property('dir');
+    expect(file).to.have.property('type', 'image/jpeg');
   });
 });

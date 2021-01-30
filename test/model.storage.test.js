@@ -135,6 +135,7 @@ describe('Model Storage', () => {
 
   it('should list', async () => {
     const list = await TestFileModel.list();
+    console.log(list);
     expect(list).to.have.property('total');
     expect(list).to.have.property('limit');
     expect(list).to.have.property('skip');

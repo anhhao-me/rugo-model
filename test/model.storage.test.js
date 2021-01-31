@@ -10,9 +10,6 @@ const { FilePath } = Storage;
 
 describe('Model Storage', () => {
   const tmpDir = path.join(__dirname, './tmp');
-  if (fs.existsSync(tmpDir))
-    fs.rmdirSync(tmpDir, { recursive: true });
-  fs.mkdirSync(tmpDir);
 
   const s = Storage({
     secret: randomString.generate(32),
@@ -20,6 +17,13 @@ describe('Model Storage', () => {
   });
 
   const TestFileModel = Model(s, 'tests', Storage.schema);
+
+  beforeEach(async () => {
+    if (fs.existsSync(tmpDir)){
+      fs.rmdirSync(tmpDir, { recursive: true });
+    }
+    fs.mkdirSync(tmpDir, { recursive: true });
+  });
 
   it('should get new id', async () => {
     const id = TestFileModel.id();
@@ -135,7 +139,6 @@ describe('Model Storage', () => {
 
   it('should list', async () => {
     const list = await TestFileModel.list();
-    console.log(list);
     expect(list).to.have.property('total');
     expect(list).to.have.property('limit');
     expect(list).to.have.property('skip');
@@ -174,6 +177,31 @@ describe('Model Storage', () => {
     expect(filePatched).to.have.property('data');
     expect(filePatched).to.have.property('name', 'me');
     expect(filePatched).to.have.property('dir', 'foo/bar');
+    expect(filePatched).to.have.property('type', 'text/html');
+    expect(result).to.be.equal(message);
+  });
+
+  it('should patch child to parent dir', async () => {
+    const message = 'hello world';
+    const rs = Readable.from([ message ]);
+
+    const file = await TestFileModel.create({
+      data: rs,
+      name: 'patchme',
+      dir: 'foo/bar',
+      type: 'text/plain',
+    });
+
+    const filePatched = await TestFileModel.patch(file._id, {
+      name: 'me',
+      dir: '',
+      type: 'text/html'
+    });
+
+    const result = filePatched.data.toString();
+    expect(filePatched).to.have.property('data');
+    expect(filePatched).to.have.property('name', 'me');
+    expect(filePatched).to.have.property('dir', '');
     expect(filePatched).to.have.property('type', 'text/html');
     expect(result).to.be.equal(message);
   });

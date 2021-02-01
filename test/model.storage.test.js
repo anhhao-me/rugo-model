@@ -206,6 +206,24 @@ describe('Model Storage', () => {
     expect(result).to.be.equal(message);
   });
 
+  it('should not move parent dir into it', async () => {
+    const file = await TestFileModel.create({
+      name: 'rootdir',
+      type: 'inode/directory',
+    });
+
+    try {
+      await TestFileModel.patch(file._id, {
+        dir: 'rootdir'
+      });
+    } catch(err){
+      expect(err.message).to.be.equal('Cannot move parent dir into it');
+      return;
+    }
+
+    assert.fail();
+  });
+
   it('should remove directory', async () => {
     const file1 = await TestFileModel.create({
       name: 'removeme',

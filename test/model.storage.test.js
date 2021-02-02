@@ -181,6 +181,61 @@ describe('Model Storage', () => {
     expect(result).to.be.equal(message);
   });
 
+  it('should not patch to non-text file', async () => {
+    const message = 'hello world';
+    const rs = Readable.from([ message ]);
+
+    const file = await TestFileModel.create({
+      data: rs,
+      name: 'patchme',
+      type: 'text/plain',
+    });
+
+    try {
+      await TestFileModel.patch(file._id, {
+        name: 'me',
+        dir: 'foo/bar',
+        type: 'image/jpg'
+      });
+    } catch(err){
+      expect(err.message).to.be.equal('Cannot change non-text type');
+      return;
+    }
+
+    assert.fail();
+  });
+
+  it('should patch content', async () => {
+    const message = 'hello world';
+    const rs = Readable.from([ message ]);
+
+    const file = await TestFileModel.create({
+      data: rs,
+      name: 'patchme',
+      type: 'text/plain',
+    });
+
+    const newMessage = 'say hi';
+    const newRs = Readable.from([ newMessage ]);
+
+    const filePatched = await TestFileModel.patch(file._id, {
+      data: newRs,
+      name: 'me',
+      dir: 'foo/bar',
+      type: 'text/html'
+    });
+
+    const result = filePatched.data.toString();
+    expect(filePatched).to.have.property('data');
+    expect(filePatched).to.have.property('name', 'me');
+    expect(filePatched).to.have.property('dir', 'foo/bar');
+    expect(filePatched).to.have.property('type', 'text/html');
+    expect(result).to.be.equal(newMessage);
+
+    const removed = await TestFileModel.get(file._id);
+    expect(removed).to.be.equal(null);
+  });
+
   it('should patch child to parent dir', async () => {
     const message = 'hello world';
     const rs = Readable.from([ message ]);
@@ -204,6 +259,61 @@ describe('Model Storage', () => {
     expect(filePatched).to.have.property('dir', '');
     expect(filePatched).to.have.property('type', 'text/html');
     expect(result).to.be.equal(message);
+  });
+
+  it('should move dir and its content', async () => {
+    const message = 'hello world';
+    const rs = Readable.from([ message ]);
+
+    const dir = await TestFileModel.create({
+      name: 'rootdir',
+      type: 'inode/directory',
+    });
+
+    await TestFileModel.create({
+      data: rs,
+      name: 'patchme',
+      dir: 'rootdir',
+      type: 'text/plain',
+    });
+
+    const tmp = await TestFileModel.patch(dir._id, {
+      dir: 'tmpdir'
+    });
+
+    const { total } = await TestFileModel.list({ dir: tmp._id });
+
+    expect(total).to.be.equal(1);
+  });
+
+  it('should patch only directory name', async () => {
+    const file = await TestFileModel.create({
+      name: 'rootdir',
+      type: 'inode/directory',
+    });
+
+    const result = await TestFileModel.patch(file._id, {
+      name: 'newdir'
+    });
+
+    expect(result).to.have.property('name', 'newdir');
+    expect(result).to.have.property('dir', '');
+    expect(result).to.have.property('type', 'inode/directory');
+  });
+
+  it('should patch only directory dir', async () => {
+    const file = await TestFileModel.create({
+      name: 'rootdir',
+      type: 'inode/directory',
+    });
+
+    const result = await TestFileModel.patch(file._id, {
+      dir: 'parentdir'
+    });
+
+    expect(result).to.have.property('name', 'rootdir');
+    expect(result).to.have.property('dir', 'parentdir');
+    expect(result).to.have.property('type', 'inode/directory');
   });
 
   it('should not move parent dir into it', async () => {

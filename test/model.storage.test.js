@@ -181,6 +181,29 @@ describe('Model Storage', () => {
     expect(result).to.be.equal(message);
   });
 
+  it('should patch with no type', async () => {
+    const message = 'hello world';
+    const rs = Readable.from([ message ]);
+
+    const file = await TestFileModel.create({
+      data: rs,
+      name: 'patchme',
+      type: 'text/plain',
+    });
+
+    const filePatched = await TestFileModel.patch(file._id, {
+      name: 'me',
+      dir: 'foo/bar'
+    });
+
+    const result = filePatched.data.toString();
+    expect(filePatched).to.have.property('data');
+    expect(filePatched).to.have.property('name', 'me');
+    expect(filePatched).to.have.property('dir', 'foo/bar');
+    expect(filePatched).to.have.property('type', 'text/plain');
+    expect(result).to.be.equal(message);
+  });
+
   it('should not patch to non-text file', async () => {
     const message = 'hello world';
     const rs = Readable.from([ message ]);

@@ -2,7 +2,7 @@ const { Model, NeDB } = require('../lib');
 const { expect, assert } = require('chai');
 
 describe('Model NeDB', () => {
-  const db = NeDB();
+  let db;
   const Schema = {
     name: {
       type: 'Text',
@@ -15,7 +15,12 @@ describe('Model NeDB', () => {
     }
   };
 
-  const UserModel = Model(db, 'users', Schema);
+  let UserModel;
+
+  beforeEach(async () => {
+    db = NeDB();
+    UserModel = Model(db, 'users', Schema);
+  });
 
   it('should get null when get non-exists doc', async () => {
     const user = await UserModel.get('123');

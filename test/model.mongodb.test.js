@@ -22,12 +22,12 @@ describe('Model MongoDB', () => {
     __timestamp: true
   };
 
-  before(async () => {
+  beforeEach(async () => {
     const uri = await mongoServer.getUri();
     db = MongoDB(uri);
   });
 
-  after(async () => {
+  afterEach(async () => {
     await mongoServer.stop();
     await db().stop();
   });

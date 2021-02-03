@@ -30,6 +30,27 @@ describe('Validate', () => {
     assert.fail();
   });
 
+  it('should throw error because of wrong regex syntax', async () => {
+    const res = await validate({}, {
+      type: 'Text',
+      regex: '^[a-z0-9]+$'
+    }, 'abcdef');
+
+    expect(res).to.be.equal('abcdef');
+
+    try { 
+      await validate({}, {
+        type: 'Text',
+        regex: '^[a-z0-9]+$'
+      }, 'abc def');
+    } catch (err){
+      expect(err.message).to.be.equal('"abc def" is not match regex');
+      return;
+    }
+
+    assert.fail();
+  });
+
   it('should valid json type', async () => {
     const val = await validate({}, {
       type: 'JSON',

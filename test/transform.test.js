@@ -2,6 +2,7 @@ const { expect, assert } = require('chai');
 
 describe('Transform', () => {
   const transform = require('../lib/transform');
+  const { Model, Type } = require('../lib/index');
   
   it('should throw error because of wrong schema type', async () => {
     try { 
@@ -85,5 +86,16 @@ describe('Transform', () => {
     }, raw);
 
     expect(bcrypt.compareSync(raw, hash)).to.be.equal(true);
+  });
+
+  it('should success because type was defined', async () => {
+    const Permission = Type();
+    Model.use('Permission', Permission);
+
+    const res = await transform({}, {
+      type: 'Permission'
+    }, '123');
+
+    expect(res).to.be.equal('123');
   });
 });

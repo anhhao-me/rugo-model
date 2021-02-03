@@ -2,6 +2,7 @@ const { expect, assert } = require('chai');
 
 describe('Validate', () => {
   const validate = require('../lib/validate');
+  const { Model, Type } = require('../lib/index');
 
   it('should throw error because of wrong schema type', async () => {
     try { 
@@ -109,6 +110,17 @@ describe('Validate', () => {
       type: 'Text',
       unique: true
     }, '123', { disableUniqueCheck: true });
+    expect(res).to.be.equal('123');
+  });
+
+  it('should success because type was defined', async () => {
+    const Permission = Type();
+    Model.use('Permission', Permission);
+
+    const res = await validate({}, {
+      type: 'Permission'
+    }, '123');
+
     expect(res).to.be.equal('123');
   });
 });

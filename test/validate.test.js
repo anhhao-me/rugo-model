@@ -144,4 +144,40 @@ describe('Validate', () => {
 
     expect(res).to.be.equal('123');
   });
+
+  it('should success validating select type', async () => {
+    const res = await validate({}, {
+      type: 'Select',
+      enum: ['abc', 123]
+    }, 123);
+
+    expect(res).to.be.equal(123);
+  });
+
+  it('should error when validate enum was not defined', async () => {
+    try {
+      await validate({}, {
+        type: 'Select'
+      }, 123);
+    } catch (err){
+      expect(err.message).to.be.equal('enum was not defined');
+      return;
+    }
+
+    assert.fail();
+  });
+
+  it('should error when value not in enum', async () => {
+    try {
+      await validate({}, {
+        type: 'Select',
+        enum: ['abc', 'def']
+      }, 123);
+    } catch (err){
+      expect(err.message).to.be.equal(`"123" is not in enumeration`);
+      return;
+    }
+
+    assert.fail();
+  });
 });

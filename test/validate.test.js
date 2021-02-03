@@ -103,4 +103,12 @@ describe('Validate', () => {
 
     assert.fail();
   });
+
+  it('should not throw error because of unique with no name and disable unique check', async () => {
+    const res = await validate({}, {
+      type: 'Text',
+      unique: true
+    }, '123', { disableUniqueCheck: true });
+    expect(res).to.be.equal('123');
+  });
 });

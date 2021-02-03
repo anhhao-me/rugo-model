@@ -15,6 +15,7 @@ describe('Model MongoDB', () => {
     email: {
       type: 'Email',
       required: true,
+      unique: true
     },
     hobby: {
       type: 'Text'

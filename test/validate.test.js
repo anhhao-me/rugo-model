@@ -180,4 +180,25 @@ describe('Validate', () => {
 
     assert.fail();
   });
+
+  it('should success validating tags type', async () => {
+    const res = await validate({}, {
+      type: 'Tag'
+    }, ['foo', 'bar']);
+
+    expect(Array.isArray(res)).to.be.equal(true);
+  });
+
+  it('should error when value not tags', async () => {
+    try {
+      await validate({}, {
+        type: 'Tag'
+      }, 123);
+    } catch (err){
+      expect(err.message).to.be.equal(`value is not a tag`);
+      return;
+    }
+
+    assert.fail();
+  });
 });

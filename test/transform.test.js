@@ -98,4 +98,31 @@ describe('Transform', () => {
 
     expect(res).to.be.equal('123');
   });
+
+  it('should transform origin tag', async () => {
+    const transform = require('../lib/transform');    
+    const res = await transform({}, {
+      type: 'Tag'
+    }, ['foo', 'bar']);
+
+    expect(Array.isArray(res)).to.be.equal(true);
+  });
+
+  it('should transform null tag', async () => {
+    const transform = require('../lib/transform');    
+    const res = await transform({}, {
+      type: 'Tag'
+    }, null);
+
+    expect(Array.isArray(res)).to.be.equal(true);
+  });
+
+  it('should transform string tag', async () => {
+    const transform = require('../lib/transform');    
+    const res = await transform({}, {
+      type: 'Tag'
+    }, '["foo", "bar"]');
+
+    expect(Array.isArray(res)).to.be.equal(true);
+  });
 });

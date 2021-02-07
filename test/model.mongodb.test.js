@@ -201,6 +201,27 @@ describe('Model MongoDB', () => {
     expect(list).to.have.property('data');
   });
 
+  it('should get list doc with pagination', async () => {
+    const PetModel = Model(db, 'pets', {
+      name: {
+        type: 'Text'
+      }
+    });
+
+    for (let i = 0; i < 11; i++)
+      await PetModel.create({ name: `pet-${i}` });
+
+    const list = await PetModel.list({
+      $skip: 10
+    });
+
+    expect(list).to.have.property('total');
+    expect(list).to.have.property('limit');
+    expect(list).to.have.property('skip');
+    expect(list).to.have.property('data');
+    expect(list.data.length).to.be.equal(1);
+  });
+
   it('should get list doc', async () => {
     const UserModel = Model(db, 'users', Schema);
 

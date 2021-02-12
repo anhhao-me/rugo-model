@@ -255,6 +255,33 @@ describe('Model MongoDB', () => {
     expect(list.data.length).to.be.equal(1);
   });
 
+  it('should get list with tag type', async () => {
+    const PetModel = Model(db, 'pets', {
+      name: {
+        type: 'Text'
+      },
+      hobby: {
+        type: 'Tag'
+      }
+    });
+
+    for (let i = 0; i < 11; i++)
+      if (i % 5 === 0)
+        await PetModel.create({ name: `pet-${i}`, hobby: ['play', 'eat'] });
+      else
+        await PetModel.create({ name: `pet-${i}`, hobby: ['play'] });
+
+    const list = await PetModel.list({
+      hobby: 'eat'
+    });
+
+    expect(list).to.have.property('total');
+    expect(list).to.have.property('limit');
+    expect(list).to.have.property('skip');
+    expect(list).to.have.property('data');
+    expect(list.data.length).to.be.equal(3);
+  });
+
   it('should get list doc', async () => {
     const UserModel = Model(db, 'users', Schema);
 

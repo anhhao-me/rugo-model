@@ -105,5 +105,5 @@ dist
 
 # Temp directoru
 tmp/
-
+*.tmp
 package-lock.json

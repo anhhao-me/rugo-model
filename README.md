@@ -1,54 +1,47 @@
-# Rugo Model
+# Rugo MongoDB
 
-Rugo Model is a modeling tool designed to work with multiple database and strong real-world validate types.
 
-## How it work?
+## Usage
 
-Input -> Transform -> Validate -> Stored.
+```js
+const model = Model(db, modelName, modelSchema);
+
+await model.create({
+  // obj
+});
+
+await model.get(id);
+
+await model.find(query);
+
+await model.patch(id, query);
+
+await model.remove(id);
+```
 
 ## Schema
 
+```json
+{
+  "name": {
+    "type": "typeName",
+    "trigger": "triggerValue"
+  },
+}
+```
+
+## Common Triggers
+
+- `required`: `true` or `false`
+
+## Types
+
 ### Text
 
-`{ type: "Text" }`
+- `minLength`: number
+- `maxLength`: number
 
-**Transform properties**
+### Number
 
-
-
-**Validate properties**
-
-
-
-### Id
-
-`{ type: "ID" }`
-
-**Transform properties**
-
-
-
-**Validate properties**
-
-
-
-### Email
-
-`{ type: "Email" }`
-
-**Transform properties**
-
-
-
-**Validate properties**
-
-
-## Model
-
-**get**
-
-**create**
-
-**patch**
-
-**remove**
+- `min`: number
+- `max`: number

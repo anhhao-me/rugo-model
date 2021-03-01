@@ -9,10 +9,11 @@ describe('Driver', () => {
 
   it('should be connect', async () => {
     const uri = await mongoServer.getUri();
-    db = await Driver(uri);
+    const client = await Driver(uri);
+    db = client.db();
     expect(db).to.be.not.equal(undefined);
     await mongoServer.stop();
-    await db.stop();
+    await client.close();
   });
 
   it('should wrong connect', async () => {

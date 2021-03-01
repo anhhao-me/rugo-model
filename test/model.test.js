@@ -7,15 +7,17 @@ const mongoServer = new MongoMemoryServer();
 
 describe('Model MongoDB', () => {
   let db;
+  let client;
 
   beforeEach(async () => {
     const uri = await mongoServer.getUri();
-    db = await Driver(uri);
+    client = await Driver(uri);
+    db = client.db();
   });
 
   afterEach(async () => {
     await mongoServer.stop();
-    await db.stop();
+    await client.close();
   });
 
   it('should be throw error because of not specific type', async () => {

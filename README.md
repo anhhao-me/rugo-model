@@ -32,7 +32,9 @@ await model.remove(id);
 
 ## Common Triggers
 
-- `required`: `true` or `false`
+- `required`: boolean
+- `unique`: boolean
+- `index`: boolean
 
 ## Types
 
@@ -40,6 +42,7 @@ await model.remove(id);
 
 - `minLength`: number
 - `maxLength`: number
+- `regex`: string with regex syntax
 
 ### Number
 

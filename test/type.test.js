@@ -98,6 +98,26 @@ describe('Type', () => {
       }
       assert.fail();
     });
+
+    it('should be valid regex', () => {
+      const text = 'hello';
+      expect(Types.text(text, {
+        regex: '^.ell.$'
+      })).to.be.equal(text);
+    });
+
+    it('should be not valid regex', () => {
+      const text = 'hello';
+      try {
+        Types.text(text, {
+          regex: 'he.+llo'
+        });
+      } catch(err){
+        expect(err.message).to.be.equal('"hello" is not match regex');
+        return;
+      }
+      assert.fail();
+    });
   }); 
 
   describe('Number', () => {
@@ -179,4 +199,66 @@ describe('Type', () => {
       assert.fail();
     });
   }); 
+
+  describe('Email', () => {
+    it('should be email', () => {
+      const text = 'hello@example.com';
+      expect(Types.email(text)).to.be.equal(text);
+    });
+
+    it('shoule be null and undefined', () => {
+      expect(Types.email(undefined)).to.be.equal(undefined);
+      expect(Types.email(null)).to.be.equal(null);
+    });
+
+    it('shoule be not email', () => {
+      const value = { foo: 'bar' };
+
+      try {
+        Types.email(value);
+      } catch(err){
+        expect(err.message).to.be.equal(`"${value}" is not a email`);
+        return;
+      }
+      assert.fail();
+    });
+
+    it('shoule be not email', () => {
+      const value = 'hello';
+
+      try {
+        Types.email(value);
+      } catch(err){
+        expect(err.message).to.be.equal(`"${value}" is not a email`);
+        return;
+      }
+      assert.fail();
+    });
+  }); 
+
+  describe('Password', () => {
+    it('should be password', () => {
+      const text = 'hello';
+      const bcrypt = require('bcrypt');
+      const hash = Types.password(text);
+      expect(bcrypt.compareSync(text, hash)).to.be.equal(true);
+    });
+
+    it('shoule be null and undefined', () => {
+      expect(Types.password(undefined)).to.be.equal(undefined);
+      expect(Types.password(null)).to.be.equal(null);
+    });
+
+    it('shoule be not password', () => {
+      const value = { foo: 'bar' };
+
+      try {
+        Types.password(value);
+      } catch(err){
+        expect(err.message).to.be.equal(`"${value}" is not a password`);
+        return;
+      }
+      assert.fail();
+    });
+  });
 });

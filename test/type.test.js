@@ -261,4 +261,6 @@ describe('Type', () => {
       assert.fail();
     });
   });
+
+  require('./types/datetime.test');
 });

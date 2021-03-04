@@ -262,5 +262,6 @@ describe('Type', () => {
     });
   });
 
+  require('./types/checkbox.test');
   require('./types/datetime.test');
 });

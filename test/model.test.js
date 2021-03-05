@@ -76,6 +76,28 @@ describe('Model MongoDB', () => {
     expect(getDoc).to.has.property('version', 1);
   });
 
+  it('should be create with default field', async () => {
+    const schema = {
+      name: {
+        type: 'text'
+      },
+      age: {
+        type: 'number',
+        default: 0
+      }
+    }
+
+    const DemoModel = Model(db, "demoId", schema);
+    const doc = await DemoModel.create({
+      name: 'foo'
+    });
+    expect(doc).to.has.property('name', 'foo');
+    expect(doc).to.has.property('age', 0);
+    expect(doc).to.has.property('createdAt');
+    expect(doc).to.has.property('updatedAt');
+    expect(doc).to.has.property('version', 1);
+  });
+
   it('should be unique create', async () => {
     const schema = {
       name: {

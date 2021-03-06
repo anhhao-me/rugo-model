@@ -38,6 +38,7 @@ describe('Type', () => {
 
   require('./types/checkbox.test');
   require('./types/datetime.test');
+  require('./types/document.test');
   require('./types/email.test');
   require('./types/number.test');
   require('./types/password.test');

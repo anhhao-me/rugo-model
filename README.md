@@ -40,11 +40,45 @@ await model.remove(id);
 
 ### Text
 
+**Validate**
+
 - `minLength`: number
 - `maxLength`: number
 - `regex`: string with regex syntax
+
+**Transform**
+
+- `uppercase`: boolean
+- `lowercase`: boolean
+- `trim`: boolean
 
 ### Number
 
 - `min`: number
 - `max`: number
+
+---
+
+## Upcomming features
+
+### Nested Schema
+
+```json
+{
+  "fieldName": {
+    "type": "List",
+    "subtype": "Text"
+  },
+  "fieldName2": ["List", "Doc", {
+    "abc": "Text",
+    "def": "Text"
+  }],
+  "fieldName3": {
+    "type": "List",
+    "subtype": "Doc",
+    "fields": {
+      "ghi": "Text"
+    }
+  }
+}
+```

@@ -1,5 +1,18 @@
 # Rugo MongoDB
 
+- [Usage](#usage)
+- [Schema](#schema)
+  - [Common configuration](#common-configuration)
+  - [Scalar types](#scalar-types)
+    - [checkbox](#checkbox)
+    - [datetime](#datetime)
+    - [email](#email)
+    - [number](#number)
+    - [password](#password)
+    - [text](#text)
+  - [Complex types](#complex-types)
+    - [document](#document)
+    - [list](#list)
 
 ## Usage
 
@@ -14,72 +27,100 @@ await model.get(id);
 
 await model.find(query);
 
-await model.patch(id, query);
+await model.patch(id, {
+  // obj key and value to update
+});
 
 await model.remove(id);
 ```
 
-## Schema
+## Schema 
 
 ```json
 {
-  "name": {
-    "type": "typeName",
-    "trigger": "triggerValue"
-  },
+  "<fieldName>": {
+    "type": "<typeName>",
+    "<optionName>": <optionValue>
+  }
 }
 ```
 
-## Common Triggers
+### Common configuration
 
-- `required`: boolean
-- `unique`: boolean
-- `index`: boolean
+All types accept a common set of configuration options.
 
-## Types
+Options:
 
-### Text
+- Only top level of schema:
+  - `index`: If `true` a database level index will be applied to this field, which can make searching faster.
+  - `unique`: If `true` then all values of this field must be unique.
+  - `default`: Define the default value when this field be set to `null`.
+- All position:
+  - `required`: If `true` then this field can never be set to `null`.
 
-**Validate**
+### Scalar types
 
-- `minLength`: number
-- `maxLength`: number
-- `regex`: string with regex syntax
+#### checkbox
 
-**Transform**
+A `checkbox` field represents a boolean (`true`/`false`) value.
 
-- `uppercase`: boolean
-- `lowercase`: boolean
-- `trim`: boolean
+#### datetime
 
-### Number
+A `datetime` field represents a time value.
 
-- `min`: number
-- `max`: number
+#### email
 
----
+A `email` field represents a email value. Inherit [`text`](#text) type.
 
-## Upcomming features
+#### number
 
-### Nested Schema
+A `number` field represents a number value.
+
+Options:
+
+- `min`: The min value of this field.
+- `max`: The max value of this field.
+
+#### password
+
+A `number` field represents an encrypted password value. The input value will be hashed to the next operation.
+
+#### text
+
+A `text` field represents a string value.
+
+Options:
+
+- `minLength`: The min number of text characters.
+- `maxLength`:The max number of text characters.
+- `regex`: The regular expression to validate input data.
+- `trim`: If `true`, the string is trimed.
+- `lowercase`: If `true`, the string is transformed to lowercase.
+- `uppercase`: If `true`, the string is transformed to uppercase.
+
+### Complex types
+
+#### document
+
+A `document` field represents a object (not array) value.
+
+#### list
+
+A `list` field represents a array value.
+
+Options:
+
+- `children`: A `schema` for each item in list.
+
+Example:
 
 ```json
 {
-  "fieldName": {
-    "type": "List",
-    "subtype": "Text"
-  },
-  "fieldName2": ["List", "Doc", {
-    "abc": "Text",
-    "def": "Text"
-  }],
-  "fieldName3": {
-    "type": "List",
+  "pets": {
+    "type": "list",
     "children": {
-      "type": "Doc",
-      "fields": {
-        "ghi": "Text"
-      }
+      "type": "text",
+      "lowercase": true
     }
   }
 }

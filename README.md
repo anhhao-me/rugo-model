@@ -75,9 +75,11 @@ await model.remove(id);
   }],
   "fieldName3": {
     "type": "List",
-    "subtype": "Doc",
-    "fields": {
-      "ghi": "Text"
+    "children": {
+      "type": "Doc",
+      "fields": {
+        "ghi": "Text"
+      }
     }
   }
 }

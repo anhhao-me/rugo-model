@@ -40,6 +40,7 @@ describe('Type', () => {
   require('./types/datetime.test');
   require('./types/document.test');
   require('./types/email.test');
+  require('./types/list.test');
   require('./types/number.test');
   require('./types/password.test');
   require('./types/text.test');

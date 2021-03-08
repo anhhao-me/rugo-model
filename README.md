@@ -104,6 +104,27 @@ Options:
 
 A `document` field represents a object (not array) value.
 
+Options:
+
+- `schema`: A schema for document value.
+
+Example:
+
+```json
+{
+  "type": "document",
+  "schema": { 
+    "abc": {
+      "type": "text"
+    },
+    "xyz": {
+      "type": "number",
+      "default": 10
+    }
+  }
+}
+```
+
 #### list
 
 A `list` field represents a array value.

@@ -51,4 +51,46 @@ describe('List', () => {
       expect(err.message).to.be.equal(`"${value3[0]}" is not a number`);
     }
   });
+
+  it('should be list with document as children', () => {
+    const value = [{ 'name': 'foo' }, { 'name': 'bar' }];
+
+    const newValue = getType({
+      type: 'list',
+      children: {
+        type: 'document',
+        schema: {
+          name: {
+            type: 'text'
+          }
+        }
+      }})(value);
+
+    expect(newValue.length).to.be.equal(value.length)
+    for (let [index, item] of Object.entries(newValue)){
+      expect(item).to.has.property('name', value[index].name);
+    }
+  });
+
+  it('should be not list with wrong document as children', () => {
+    const value = [{ 'age': 12 }, { 'age': 'abc' }];
+
+    try {
+      getType({
+        type: 'list',
+        children: {
+          type: 'document',
+          schema: {
+            age: {
+              type: 'number',
+              required: true
+            }
+          }
+        }
+      })(value);
+      assert.fail();
+    } catch(err){
+      expect(err.message).to.be.equal(`"${value[1].age}" is not a number`);
+    }
+  });
 });

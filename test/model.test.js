@@ -272,6 +272,23 @@ describe('Model MongoDB', () => {
     expect(list).to.have.property('data');
   });
 
+  it('should get list doc with search query', async () => {
+    const Schema = {
+      name: {
+        type: 'text',
+        index: true
+      }
+    }
+    const UserModel = Model(db, 'users', Schema);
+
+    const list = await UserModel.list({ $text: { $search: 'demo' }});
+
+    expect(list).to.have.property('total');
+    expect(list).to.have.property('limit');
+    expect(list).to.have.property('skip');
+    expect(list).to.have.property('data');
+  });
+
   it('should remove doc', async () => {
     const Schema = {
       email: {

@@ -43,5 +43,6 @@ describe('Type', () => {
   require('./types/list.test');
   require('./types/number.test');
   require('./types/password.test');
+  require('./types/relationship.test');
   require('./types/text.test');
 });

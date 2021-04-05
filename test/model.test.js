@@ -58,7 +58,7 @@ describe('Model MongoDB', () => {
       }
     }
 
-    const DemoModel = Model(db, "demoId", schema);
+    const DemoModel = Model(() => db, "demoId", schema);
     const doc = await DemoModel.create({
       name: 'foo'
     });

@@ -90,4 +90,23 @@ describe('Text', () => {
     expect(Types.text(text, { lowercase: true })).to.be.equal(text.toLowerCase());
     expect(Types.text(text, { uppercase: true })).to.be.equal(text.toUpperCase());
   });
+
+  it('should be valid enum', () => {
+    const text = 'foo';
+    expect(Types.text(text, {
+      enum: ['foo', 'bar']
+    })).to.be.equal(text);
+  });
+
+  it('should be not valid enum', () => {
+    const text = 'hello';
+    try {
+      Types.text(text, {
+        enum: ['foo', 'bar']
+      });
+      assert.fail();
+    } catch(err){
+      expect(err.message).to.be.equal('"hello" is not valid enum');
+    }
+  });
 }); 

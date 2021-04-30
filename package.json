@@ -1,6 +1,6 @@
 {
   "name": "rugo-mongodb",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -31,6 +31,7 @@
     "graphql": "^15.5.0",
     "mime": "^2.5.0",
     "mocha": "^8.2.1",
+    "mongodb-docker-server": "0.0.2",
     "nedb": "^1.8.0",
     "node-cache": "^5.1.2",
     "nyc": "^15.1.0",

@@ -1,21 +1,28 @@
-const { MongoMemoryServer } = require('mongodb-memory-server');
 const {  Model, Driver } = require('../lib');
-const { expect, assert } = require('chai');
+const { expect } = require('chai');
 const { ObjectId } = require('mongodb');
 
-const mongoServer = new MongoMemoryServer();
+const mongoServer = require('mongodb-docker-server');
 
-describe('Model MongoDB', () => {
+describe('Model MongoDB - extra tasks', () => {
   let db;
   let client;
 
-  beforeEach(async () => {
-    const uri = await mongoServer.getUri();
+  before(async function(){
+    this.timeout(20000);
+
+    const uri = await mongoServer.start();
     client = await Driver(uri);
-    db = client.db();
+    db = client.db('test');
   });
 
-  afterEach(async () => {
+  beforeEach(async function(){
+    await db.dropDatabase();
+  });
+
+  after(async function(){
+    this.timeout(20000);
+
     await mongoServer.stop();
     await client.close();
   });
@@ -599,6 +606,24 @@ describe('Model MongoDB', () => {
       } catch(err){
         expect(err.message).to.be.equal('"a" is not a number');
       }
+    });
+  });
+
+  describe('control tasks - stats', () => {
+    it('should stats', async () => {
+      const Schema = {
+        name: {
+          type: 'text'
+        }
+      }
+      const UserModel = Model(db, 'users', Schema);
+  
+      const stats = await UserModel.stats();
+  
+      expect(stats).to.have.property('size');
+      expect(stats).to.have.property('count');
+      expect(stats).to.have.property('totalSize');
+      expect(stats).to.have.property('storageSize');
     });
   });
 });

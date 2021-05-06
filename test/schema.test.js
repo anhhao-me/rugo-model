@@ -11,4 +11,11 @@ describe('Schema', () => {
 
     expect(result).to.be.equal(raw);
   });
+
+  it('should quick describe type', async () => {
+    const raw = 'hello';
+    const result = getType('text')(raw);
+
+    expect(result).to.be.equal(raw);
+  });
 });

@@ -161,7 +161,7 @@ describe('Model MongoDB', () => {
       try {
         await DemoModel.create(preDoc);
       } catch(err){
-        expect(err.message).to.be.equal('value is required');
+        expect(err.message).to.be.equal('value is required in "age"');
         return;
       }
   
@@ -183,7 +183,7 @@ describe('Model MongoDB', () => {
       try {
         await DemoModel.create(preDoc);
       } catch(err){
-        expect(err.message).to.be.equal('"123" is not a text');
+        expect(err.message).to.be.equal('"123" is not a text in "name"');
         return;
       }
   
@@ -512,7 +512,7 @@ describe('Model MongoDB', () => {
         });
         assert.fail();
       } catch(err){
-        expect(err.message).to.be.equal('"abc" is not a number');
+        expect(err.message).to.be.equal('"abc" is not a number in "fibo"');
       }
 
       // multi push
@@ -526,7 +526,7 @@ describe('Model MongoDB', () => {
         });
         assert.fail();
       } catch(err){
-        expect(err.message).to.be.equal('"a" is not a number');
+        expect(err.message).to.be.equal('"a" is not a number in "fibo"');
       }
     
       // slice push
@@ -541,7 +541,7 @@ describe('Model MongoDB', () => {
         });
         assert.fail();
       } catch(err){
-        expect(err.message).to.be.equal('"b" is not a number');
+        expect(err.message).to.be.equal('"b" is not a number in "fibo"');
       }
 
       // object push
@@ -555,7 +555,7 @@ describe('Model MongoDB', () => {
         });
         assert.fail();
       } catch(err){
-        expect(err.message).to.be.equal('"[object Object]" is not a number');
+        expect(err.message).to.be.equal('"[object Object]" is not a number in "fibo"');
       }
     });
 
@@ -597,7 +597,7 @@ describe('Model MongoDB', () => {
         });
         assert.fail();
       } catch(err){
-        expect(err.message).to.be.equal('"a" is not a number');
+        expect(err.message).to.be.equal('"a" is not a number in "age" in "people"');
       }
     });
   });

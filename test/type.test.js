@@ -1,5 +1,5 @@
 const { expect, assert } = require('chai');
-const { Types, createType } = require('../lib');
+const { createType } = require('../lib');
 
 describe('Type', () => {
   describe('Create Type', () => {

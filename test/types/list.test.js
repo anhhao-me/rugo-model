@@ -90,7 +90,7 @@ describe('List', () => {
       })(value);
       assert.fail();
     } catch(err){
-      expect(err.message).to.be.equal(`"${value[1].age}" is not a number`);
+      expect(err.message).to.be.equal(`"${value[1].age}" is not a number in "age"`);
     }
   });
 });

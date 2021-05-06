@@ -66,7 +66,7 @@ describe('Document', () => {
       })(value);
       assert.fail();
     } catch(err){
-      expect(err.message).to.be.equal(`"${value.abc}" is not a number`);
+      expect(err.message).to.be.equal(`"${value.abc}" is not a number in "abc"`);
     }
   });
 });

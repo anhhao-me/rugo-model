@@ -52,11 +52,10 @@ describe('Model MongoDB', () => {
     it('should be create and get', async () => {
       const schema = {
         name: {
-          type: 'text'
+          type: 'text',
+          index: true
         },
-        age: {
-          type: 'number'
-        }
+        age: 'number'
       }
   
       const DemoModel = Model(() => db, "demoId", schema);

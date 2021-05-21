@@ -2,7 +2,7 @@
 
 ## Documentation
 
-View documentation at: [Rugo MongoDB Documents](./docs/index.md)
+View documentation at: [Rugo MongoDB Wiki](https://github.com/anhhaome/rugo-mongodb/wiki)
 
 ## LICENSE
 

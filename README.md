@@ -1,8 +1,8 @@
 # Rugo MongoDB
 
-## Wiki
+## Documentation
 
-View wiki at: [Rugo MongoDB Wiki](./wiki/Rugo-MongoDB)
+View documentation at: [Rugo MongoDB Documents](./docs/index.md)
 
 ## LICENSE
 
